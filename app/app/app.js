@@ -5,4 +5,8 @@ angular.module('myApp', ['angularjs-wizard']);
 
 function myController($scope) {
     $scope.email = 'jlavin@jimlavin.net';
+    $scope.franchisee = {};
+    $scope.submitForm = function(){
+        alert('Form Submitted');
+    };
 }
