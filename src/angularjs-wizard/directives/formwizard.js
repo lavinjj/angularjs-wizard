@@ -18,13 +18,12 @@ angular.module('angularjs-wizard.directives')
                 '</div>',
             transclude: true,
             replace: true,
-            require: ['formWizard', '^form'],
+            require: ['formWizard'],
             scope: {
               submitFunction: '&formSubmit'
             },
             link: function ($scope, $elem, $attr, $ctrl) {
                 $scope.formWizardCtrl = $ctrl[0];
-                $scope.formCtrl = $ctrl[1];
                 $scope.title = $attr.title || 'wizard form';
                 $scope.id = $attr.id || 'wizard1';
                 $scope.next = function () {
@@ -184,19 +183,18 @@ angular.module('angularjs-wizard.directives')
     .directive('wizardStepContent', function () {
         return {
             restrict: 'E',
-            template: '<div class="step ui-formwizard-content" id="first" ng-show="visible" >' +
+            template: '<div class="step ui-formwizard-content" id="uiform{{stepNumber}}" ng-show="visible" >' +
                 '<div ng-form name="uiform{{stepNumber}}" ng-transclude></div>' +
                 '</div>',
             require: ['^formWizard', 'wizardStepContent'],
             transclude: true,
-            replace: true,
             scope: {
                 stepNumber: '@'
             },
             link: function ($scope, $elem, $attr, $ctrl) {
                 $scope.formWizardCtrl = $ctrl[0];
                 $scope.stepCtrl = $ctrl[1];
-                $scope.stepCtrl.$name = $scope.stepNumber || 0;
+                $scope.stepCtrl.$name = $scope.stepNumber;
                 $scope.formWizardCtrl.$addStepContent($scope.stepCtrl);
                 $scope.visible = false;
                 $elem.bind('$destroy', function() {
