@@ -2,7 +2,7 @@
 <html lang="en" ng-app="myApp">
 <head>
     <meta charset="utf-8">
-    <title>angular-responsive Directive Example</title>
+    <title>angular-wizard Directive Example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Jim Lavin">
     <!-- Le styles -->
@@ -20,180 +20,393 @@
 <div class="container-fluid" ng-controller="myController">
     <div class="row-fluid">
         <div>&nbsp;</div>
-        <form-wizard title="Test Wizard" id="testWizard" form-submit="submitForm()">
-            <wizard-steps>
-                <wizard-step step-number="0">Read this and go to next</wizard-step>
-                <wizard-step step-number="1">Second step is important</wizard-step>
-                <wizard-step step-number="2">Don`t forget to read me</wizard-step>
-                <wizard-step step-number="3">Finish is here, congrats</wizard-step>
-            </wizard-steps>
-            <wizard-step-content step-number="0">
-                <h2>First Step</h2>
-
-                <div class="form-row row-fluid">
-                    <div class="span12">
-                        <div class="row-fluid">
-                            <label class="form-label span4" for="Name">DBA/Company Name:</label>
-                            <input class="span8 uniform-input text" id="Name" name="Name" type="text"
-                                   ng-model="franchisee.Name" required/>
+        <div ng-form name="franchiseeWizard" method="post">
+            <div>&nbsp;</div>
+            <div class="content noPad clearfix">
+                <ot-form-wizard title="Sign Up for On-line Ordering" id="testWizard" form-submit="submitForm(model)" model="franchisee">
+                    <div class="msg"></div>
+                    <ot-wizard-steps>
+                        <ot-wizard-step step-number="1">Chain Information</ot-wizard-step>
+                        <ot-wizard-step step-number="2">Company Information</ot-wizard-step>
+                        <ot-wizard-step step-number="3">Contact Information</ot-wizard-step>
+                        <ot-wizard-step step-number="4">Plans & Features</ot-wizard-step>
+                        <ot-wizard-step step-number="5">Billing Information</ot-wizard-step>
+                        <ot-wizard-step step-number="6">Terms and Conditions</ot-wizard-step>
+                    </ot-wizard-steps>
+                    <ot-wizard-step-content step-number="1">
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="ChainName">Chain Name</label>
+                                    <input class="span8 uniform-input text" id="ChainName" name="ChainName"
+                                           type="text"
+                                           ng-model="wizardModel.Name" required/>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="form-row row-fluid">
-                    <div class="span12">
-                        <div class="row-fluid">
-                            <label class="form-label span4" for="AccountNumber">Account Number:</label>
-                            <input class="span8 uniform-input text" id="AccountNumber" name="AccountNumber" type="text"
-                                   ng-model="franchisee.AccountNumber"/>
+                    </ot-wizard-step-content>
+                    <ot-wizard-step-content step-number="2">
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="CompanyName">DBA/Company Name:</label>
+                                    <input class="span8 uniform-input text" id="CompanyName" name="CompanyName" type="text"
+                                           ng-model="wizardModel.CompanyName" required/>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </wizard-step-content>
-            <wizard-step-content step-number="1">
-                <h2>Second Step</h2>
-
-                <div class="form-row row-fluid">
-                    <div class="span12">
-                        <div class="row-fluid">
-                            <label class="form-label span4" for="Address1">Address:</label>
-                            <input class="span8 uniform-input text" id="Address1" name="Address1" type="text"
-                                   ng-model="franchisee.Address1" required/>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="CompanyAddress1">Address:</label>
+                                    <input class="span8 uniform-input text" id="CompanyAddress1" name="CompanyAddress1" type="text"
+                                           ng-model="wizardModel.CompanyAddress1" required/>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="form-row row-fluid">
-                    <div class="span12">
-                        <div class="row-fluid">
-                            <label class="form-label span4" for="Address2">&nbsp;</label>
-                            <input class="span8 uniform-input text" id="Address2" name="Address2" type="text"
-                                   ng-model="franchisee.Address2"/>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="CompanyAddress2">&nbsp;</label>
+                                    <input class="span8 uniform-input text" id="CompanyAddress2" name="CompanyAddress2" type="text"
+                                           ng-model="wizardModel.CompanyAddress2"/>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="form-row row-fluid">
-                    <div class="span12">
-                        <div class="row-fluid">
-                            <label class="form-label span4" for="City">City:</label>
-                            <input class="span8 uniform-input text" id="Text2" name="City" type="text"
-                                   ng-model="franchisee.City" required/>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="CompanyCity">City:</label>
+                                    <input class="span8 uniform-input text" id="CompanyCity" name="CompanyCity" type="text"
+                                           ng-model="wizardModel.CompanyCity" required/>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="form-row row-fluid">
-                    <div class="span12">
-                        <div class="row-fluid">
-                            <label class="form-label span4" for="State">State/County:</label>
-                            <select id="State" name="State" ng-model="franchisee.State" required>
-                                <option value="AL">Alabama</option>
-                                <option value="AK">Alaska</option>
-                                <option value="AZ">Arizona</option>
-                                <option value="AR">Arkansas</option>
-                                <option value="CA">California</option>
-                                <option value="CO">Colorado</option>
-                                <option value="CT">Connecticut</option>
-                                <option value="DE">Delaware</option>
-                                <option value="DC">District of Columbia</option>
-                                <option value="FL">Florida</option>
-                                <option value="GA">Georgia</option>
-                                <option value="HI">Hawaii</option>
-                                <option value="ID">Idaho</option>
-                                <option value="IL">Illinois</option>
-                                <option value="IN">Indiana</option>
-                                <option value="IA">Iowa</option>
-                                <option value="KS">Kansas</option>
-                                <option value="KY">Kentucky</option>
-                                <option value="LA">Louisiana</option>
-                                <option value="ME">Maine</option>
-                                <option value="MD">Maryland</option>
-                                <option value="MA">Massachusetts</option>
-                                <option value="MI">Michigan</option>
-                                <option value="MN">Minnesota</option>
-                                <option value="MS">Mississippi</option>
-                                <option value="MO">Missouri</option>
-                                <option value="MT">Montana</option>
-                                <option value="NE">Nebraska</option>
-                                <option value="NV">Nevada</option>
-                                <option value="NH">New Hampshire</option>
-                                <option value="NJ">New Jersey</option>
-                                <option value="NM">New Mexico</option>
-                                <option value="NY">New York</option>
-                                <option value="NC">North Carolina</option>
-                                <option value="ND">North Dakota</option>
-                                <option value="OH">Ohio</option>
-                                <option value="OK">Oklahoma</option>
-                                <option value="OR">Oregon</option>
-                                <option value="PA">Pennsylvania</option>
-                                <option value="RI">Rhode Island</option>
-                                <option value="SC">South Carolina</option>
-                                <option value="SD">South Dakota</option>
-                                <option value="TN">Tennessee</option>
-                                <option value="TX">Texas</option>
-                                <option value="UT">Utah</option>
-                                <option value="VT">Vermont</option>
-                                <option value="VA">Virginia</option>
-                                <option value="WA">Washington</option>
-                                <option value="WV">West Virginia</option>
-                                <option value="WI">Wisconsin</option>
-                                <option value="WY">Wyoming</option>
-                            </select>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="CompanyState">State/County:</label>
+                                    <select id="CompanyState" name="CompanyState" ng-model="wizardModel.CompanyState"
+                                            required>
+                                        <option value="">Select State</option>
+                                        <option value="AL">Alabama</option>
+                                        <option value="AK">Alaska</option>
+                                        <option value="AZ">Arizona</option>
+                                        <option value="AR">Arkansas</option>
+                                        <option value="CA">California</option>
+                                        <option value="CO">Colorado</option>
+                                        <option value="CT">Connecticut</option>
+                                        <option value="DE">Delaware</option>
+                                        <option value="DC">District of Columbia</option>
+                                        <option value="FL">Florida</option>
+                                        <option value="GA">Georgia</option>
+                                        <option value="HI">Hawaii</option>
+                                        <option value="ID">Idaho</option>
+                                        <option value="IL">Illinois</option>
+                                        <option value="IN">Indiana</option>
+                                        <option value="IA">Iowa</option>
+                                        <option value="KS">Kansas</option>
+                                        <option value="KY">Kentucky</option>
+                                        <option value="LA">Louisiana</option>
+                                        <option value="ME">Maine</option>
+                                        <option value="MD">Maryland</option>
+                                        <option value="MA">Massachusetts</option>
+                                        <option value="MI">Michigan</option>
+                                        <option value="MN">Minnesota</option>
+                                        <option value="MS">Mississippi</option>
+                                        <option value="MO">Missouri</option>
+                                        <option value="MT">Montana</option>
+                                        <option value="NE">Nebraska</option>
+                                        <option value="NV">Nevada</option>
+                                        <option value="NH">New Hampshire</option>
+                                        <option value="NJ">New Jersey</option>
+                                        <option value="NM">New Mexico</option>
+                                        <option value="NY">New York</option>
+                                        <option value="NC">North Carolina</option>
+                                        <option value="ND">North Dakota</option>
+                                        <option value="OH">Ohio</option>
+                                        <option value="OK">Oklahoma</option>
+                                        <option value="OR">Oregon</option>
+                                        <option value="PA">Pennsylvania</option>
+                                        <option value="RI">Rhode Island</option>
+                                        <option value="SC">South Carolina</option>
+                                        <option value="SD">South Dakota</option>
+                                        <option value="TN">Tennessee</option>
+                                        <option value="TX">Texas</option>
+                                        <option value="UT">Utah</option>
+                                        <option value="VT">Vermont</option>
+                                        <option value="VA">Virginia</option>
+                                        <option value="WA">Washington</option>
+                                        <option value="WV">West Virginia</option>
+                                        <option value="WI">Wisconsin</option>
+                                        <option value="WY">Wyoming</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="form-row row-fluid">
-                    <div class="span12">
-                        <div class="row-fluid">
-                            <label class="form-label span4" for="Zip">Zip:</label>
-                            <input class="span8 uniform-input text" id="Zip" name="Zip" type="text"
-                                   ng-model="franchisee.Zip" required/>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="CompanyZip">Zip:</label>
+                                    <input class="span8 uniform-input text" id="CompanyZip" name="CompanyZip" type="text"
+                                           ng-model="wizardModel.CompanyZip" required/>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </wizard-step-content>
-            <wizard-step-content step-number="2">
-                <h2>Third Step</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores maxime molestias cum
-                    iusto harum. Ipsam, delectus repellat magnam voluptates veritatis temporibus pariatur
-                    laboriosam aperiam? Distinctio, repellat, minima quam reiciendis provident ad
-                    consectetur ipsam voluptatem illum asperiores unde voluptate voluptatibus magnam quo
-                    quia deserunt quibusdam quaerat aliquam dolore cum est ipsum optio temporibus
-                    repudiandae incidunt nesciunt tempora accusamus ex facere fugiat libero dolores rerum
-                    illo iste laudantium corporis sapiente blanditiis. Sapiente, assumenda, natus delectus
-                    obcaecati temporibus officia iusto! Nisi, assumenda, eum quibusdam reiciendis nostrum
-                    sunt pariatur repudiandae omnis a nulla natus veritatis quasi dignissimos error ipsam
-                    laudantium eius sapiente voluptatum obcaecati laboriosam provident quam harum maiores
-                    nihil saepe sit mollitia delectus non officiis officia doloremque quisquam recusandae
-                    illum. Nihil, fugiat inventore totam nesciunt excepturi eos quis officiis fugit sit
-                    temporibus nemo neque unde odio ipsum maiores! Accusamus, mollitia, velit, quisquam,
-                    earum cupiditate nostrum vel iusto fuga nihil unde impedit soluta numquam?</p>
-            </wizard-step-content>
-            <wizard-step-content step-number="3">
-                <h2>Fourth Step</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores maxime molestias cum
-                    iusto harum. Ipsam, delectus repellat magnam voluptates veritatis temporibus pariatur
-                    laboriosam aperiam? Distinctio, repellat, minima quam reiciendis provident ad
-                    consectetur ipsam voluptatem illum asperiores unde voluptate voluptatibus magnam quo
-                    quia deserunt quibusdam quaerat aliquam dolore cum est ipsum optio temporibus
-                    repudiandae incidunt nesciunt tempora accusamus ex facere fugiat libero dolores rerum
-                    illo iste laudantium corporis sapiente blanditiis. Sapiente, assumenda, natus delectus
-                    obcaecati temporibus officia iusto! Nisi, assumenda, eum quibusdam reiciendis nostrum
-                    sunt pariatur repudiandae omnis a nulla natus veritatis quasi dignissimos error ipsam
-                    laudantium eius sapiente voluptatum obcaecati laboriosam provident quam harum maiores
-                    nihil saepe sit mollitia delectus non officiis officia doloremque quisquam recusandae
-                    illum. Nihil, fugiat inventore totam nesciunt excepturi eos quis officiis fugit sit
-                    temporibus nemo neque unde odio ipsum maiores! Accusamus, mollitia, velit, quisquam,
-                    earum cupiditate nostrum vel iusto fuga nihil unde impedit soluta numquam?</p>
-            </wizard-step-content>
-        </form-wizard>
-        <div>&nbsp;</div>
+                    </ot-wizard-step-content>
+                    <ot-wizard-step-content step-number="3">
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="ContactName">Primary Contact Name:</label>
+                                    <input class="span8 uniform-input text" id="ContactName" name="ContactName"
+                                           type="text"
+                                           ng-model="wizardModel.ContactName" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="ContactPhone">Primary Contact Phone:</label>
+                                    <input class="span8 uniform-input text" id="ContactPhone" name="ContactPhone"
+                                           type="text"
+                                           ng-model="wizardModel.ContactPhone" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="ContactEmail">Primary Contact Email:</label>
+                                    <input class="span8 uniform-input text" id="ContactEmail" name="ContactEmail"
+                                           type="text"
+                                           ng-model="wizardModel.ContactEmail" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </ot-wizard-step-content>
+                    <ot-wizard-step-content step-number="4">
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="chkBronze">Bronze Plan - $69/Month per location.<br/>
+                                    Features: Pickup Only, Pay with Cash, Unlimited menu items with no modifiers, Basic promotions.</label>
+                                    <input id="chkBronze" name="PlanType" class="span8 uniform-input text" ng-model="wizardModel.PlanType" type="checkbox" ng-true-value="'Bronze'" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="chkSilver">Silver Plan - $89/Month per location.<br/>
+                                        Features: Pickup and Delivery, Pay with Cash or Credit Card, Unlimited menu items with modifiers, Basic promotions.</label>
+                                    <input id="chkSilver" name="PlanType" class="span8 uniform-input text" ng-model="wizardModel.PlanType" type="checkbox" ng-true-value="'Silver'" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="chkGold">Gold Plan - $100/Month per location.<br/>
+                                        Features: Pickup and Delivery, Pay with Cash, Credit Card or PayPal, Unlimited menu items with modifiers, Advanced promotions.</label>
+                                    <input id="chkGold" name="PlanType" class="span8 uniform-input text" ng-model="wizardModel.PlanType" type="checkbox" ng-true-value="'Gold'" />
+                                </div>
+                            </div>
+                        </div>
+                    </ot-wizard-step-content>
+                    <ot-wizard-step-content step-number="5">
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="BillPrimaryContact">The billing contact is
+                                        the
+                                        primary contact</label>
+                                    <input id="BillPrimaryContact" name="BillPrimaryContact"
+                                           class="span8 uniform-input text"
+                                           ng-model="wizardModel.BillPrimaryContact"
+                                           type="checkbox"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid" ng-hide="wizardModel.BillPrimaryContact">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="BillingContactName">Billing Contact
+                                        Name:</label>
+                                    <input id="BillingContactName" name="BillingContactName"
+                                           class="span8 uniform-input text"
+                                           ng-model="wizardModel.BillingContactName" type="text"
+                                           ot-conditional-required="wizardModel.BillPrimaryContact === false"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid" ng-hide="wizardModel.BillPrimaryContact">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="BillingContactPhone">Billing Contact
+                                        Phone:</label>
+                                    <input id="BillingContactPhone" name="BillingContactPhone"
+                                           class="span8 uniform-input text"
+                                           ng-model="wizardModel.BillingContactPhone" type="text"
+                                           ot-conditional-required="wizardModel.BillPrimaryContact === false"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid" ng-hide="wizardModel.BillPrimaryContact">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="BillingContactEmail">Billing Contact
+                                        Email:</label>
+                                    <input id="BillingContactEmail" name="BillingContactEmail"
+                                           class="span8 uniform-input text"
+                                           ng-model="wizardModel.BillingContactEmail" type="text"
+                                           ot-conditional-required="wizardModel.BillPrimaryContact === false"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="PaymentOptions">Payment Method:</label>
+                                    <select class="span8" id="PaymentOptions" name="PaymentOptions" ng-model="wizardModel.SetupPaymentOption" required>
+                                        <option Value="">-- Specify how you would like to pay your account --</option>
+                                        <option Value="BILLMONTHLY">Bill me monthly in advance for all of my locations</option>
+                                        <option Value="BILLQUARTERLY">Bill me quarterly in advance for all of my locations</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="CardHolder">Name on Credit Card</label>
+                                    <input id="CardHolder" name="CardHolder" class="span8 uniform-input text"
+                                           ng-model="wizardModel.SetupPaymentCardholder" type="text" required
+                                           />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="CreditCardNumber">Credit card number</label>
+                                    <input id="CreditCardNumber" name="CreditCardNumber"
+                                           class="span8 uniform-input text"
+                                           ng-model="wizardModel.SetupPaymentCCNumber" type="text" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="CardZip">Card Zip</label>
+                                    <input id="CardZip" name="CardZip" class="span8 uniform-input text"
+                                           ng-model="wizardModel.SetupPaymentCardZip" type="text" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="ExpiryMM">Expiry Month</label>
+                                    <select class="span4" id="ExpiryMM" name="ExpiryMM"
+                                            ng-model="wizardModel.SetupPaymentCCExpMM" required>
+                                        <option Value="0">Month</option>
+                                        <option Value="1">January</option>
+                                        <option Value="2">February</option>
+                                        <option Value="3">March</option>
+                                        <option Value="4">April</option>
+                                        <option Value="5">May</option>
+                                        <option Value="6">June</option>
+                                        <option Value="7">July</option>
+                                        <option Value="8">August</option>
+                                        <option Value="9">September</option>
+                                        <option Value="10">October</option>
+                                        <option Value="11">November</option>
+                                        <option Value="12">December</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="ExpiryYY">Expiry Year</label>
+                                    <select class="span4" id="ExpiryYY" name="ExpiryYY"
+                                            ng-model="wizardModel.SetupPaymentCCExpYY" required>
+                                        <option Value="0">Year</option>
+                                        <option Value="2015">2015</option>
+                                        <option Value="2016">2016</option>
+                                        <option Value="2017">2017</option>
+                                        <option Value="2018">2018</option>
+                                        <option Value="2019">2019</option>
+                                        <option Value="2020">2020</option>
+                                        <option Value="2021">2021</option>
+                                        <option Value="2022">2022</option>
+                                        <option Value="2023">2023</option>
+                                        <option Value="2024">2024</option>
+                                        <option Value="2026">2026</option>
+                                        <option Value="2027">2027</option>
+                                        <option Value="2028">2028</option>
+                                        <option Value="2029">2029</option>
+                                        <option Value="2030">2030</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </ot-wizard-step-content>
+                    <ot-wizard-step-content step-number="6">
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="TermsAccepted">I have reviewed and agree with the
+                                        <a
+                                            href="resources/agreements/Service.pdf" target="_blank">Services</a></label>
+                                    <input id="TermsAccepted" name="TermsAccepted"
+                                           class="span8 uniform-input text" ng-model="wizardModel.TermsAccepted"
+                                           type="checkbox" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="ServiceAccepted">I have reviewed, understand and agree
+                                        to be bound by the
+                                        <a href="resources/agreements/tos.pdf" target="_blank">Terms of
+                                            Service</a></label>
+                                    <input id="ServiceAccepted" name="ServiceAccepted"
+                                           class="span8 uniform-input text"
+                                           ng-model="wizardModel.ServiceAccepted"
+                                           type="checkbox" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span4" for="SLAAccepted">I have reviewed and agree with the <a
+                                        href="resources/agreements/sla.pdf" target="_blank">Service Level Agreement</a></label>
+                                    <input id="SLAAccepted" name="SLAAccepted"
+                                           class="span8 uniform-input text" ng-model="wizardModel.SLAAccepted"
+                                           type="checkbox" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </ot-wizard-step-content>
+                </ot-form-wizard>
+            </div>
+        </div>
     </div>
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!--script src="../bower_components/jquery/jquery.js"></script -->
-    <script src="../bower_components/angular/angular.js"></script>
-    <script src="app/app.js"></script>
-    <script src="../dist/angularjs-wizard.js"></script>
+    <div>&nbsp;</div>
+</div>
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<!--script src="../bower_components/jquery/jquery.js"></script -->
+<script src="../bower_components/angular/angular.js"></script>
+<script src="app/app.js"></script>
+<script src="../dist/angularjs-wizard.js"></script>
 </body>
 </html>

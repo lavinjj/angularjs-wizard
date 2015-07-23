@@ -1,26 +1,27 @@
 angular.module('angularjs-wizard.directives')
-    .directive('formWizard', function () {
+    .directive('otFormWizard', function () {
         return {
             restrict: 'E',
             template: '<div class="box gradient">' +
-                '<div class="title">' +
-                '<h4><span>{{title}}</span></h4>' +
-                '</div>' +
-                '<div class="content noPad clearfix">' +
-                '<form id="{{id}}Wizard" class="form-horizontal ui-formwizard">' +
-                '<div class="msg"></div>' +
-                '<div ng-transclude></div>' +
-                '<div class="form-actions full">' +
-                '<button class="btn pull-left ui-wizard-content ui-formwizard-button" type="reset" value="Back" ng-click="previous()" ng-disabled="isPreviousAllowed()"> Back </button>' +
-                '<button class="btn pull-right ui-wizard-content ui-formwizard-button" type="submit" value="Next" ng-click="next()" ng-disabled="!isNextAllowed()"><span ng-show="displayNext()"> Next </span><span ng-hide="displayNext()"> Submit </span></button>' +
-                '</div>' +
-                '</form>' +
-                '</div>',
+            '<div class="title">' +
+            '<h4><span>{{title}}</span></h4>' +
+            '</div>' +
+            '<div class="content noPad clearfix">' +
+            '<div ng-form id="{{id}}Wizard" class="form-horizontal ui-formwizard">' +
+            '<div class="msg"></div>' +
+            '<div ng-transclude></div>' +
+            '<div class="form-actions full">' +
+            '<button class="btn pull-left ui-wizard-content ui-formwizard-button" type="reset" value="Back" ng-click="previous()" ng-disabled="isPreviousAllowed()"> Back </button>' +
+            '<button class="btn pull-right ui-wizard-content ui-formwizard-button" type="submit" value="Next" ng-click="next()" ng-disabled="!isNextAllowed()"><span ng-show="displayNext()"> Next </span><span ng-hide="displayNext()"> Submit </span></button>' +
+            '</div>' +
+            '</div>' +
+            '</div>',
             transclude: true,
             replace: true,
-            require: ['formWizard'],
+            require: ['otFormWizard'],
             scope: {
-              submitFunction: '&formSubmit'
+                submitFunction: '&formSubmit',
+                model: '='
             },
             link: function ($scope, $elem, $attr, $ctrl) {
                 $scope.formWizardCtrl = $ctrl[0];
@@ -36,7 +37,7 @@ angular.module('angularjs-wizard.directives')
                     return $scope.formWizardCtrl.currentStep === 0;
                 };
                 $scope.isNextAllowed = function(){
-                    if(!$scope.formWizardCtrl.content[$scope.formWizardCtrl.currentStep].$valid()) return false;
+                    if($scope.formWizardCtrl.content[$scope.formWizardCtrl.currentStep] && !$scope.formWizardCtrl.content[$scope.formWizardCtrl.currentStep].$valid()) return false;
                     return $scope.formWizardCtrl.currentStep < $scope.formWizardCtrl.steps.length;
                 };
                 $scope.displayNext = function() {
@@ -94,21 +95,25 @@ angular.module('angularjs-wizard.directives')
                 };
 
                 wizard.$next = function () {
-                        wizard.$hideAll();
-                        wizard.currentStep++;
-                        if (wizard.currentStep < wizard.steps.length && wizard.currentStep < wizard.content.length) {
-                            wizard.steps[wizard.currentStep].$show();
-                            wizard.content[wizard.currentStep].$show();
-                        } else {
-                            wizard.currentStep = wizard.steps.length;
-                            $scope.submitFunction();
-                        }
+                    wizard.content[wizard.currentStep].$update();
+                    wizard.$hideAll();
+                    wizard.currentStep++;
+                    if (wizard.currentStep < wizard.steps.length && wizard.currentStep < wizard.content.length) {
+                        wizard.content[wizard.currentStep].$populateModel($scope.model);
+                        wizard.steps[wizard.currentStep].$show();
+                        wizard.content[wizard.currentStep].$show();
+                    } else {
+                        wizard.currentStep = wizard.steps.length;
+                        $scope.submitFunction({model: $scope.model});
+                    }
                 };
 
                 wizard.$previous = function () {
+                    wizard.content[wizard.currentStep].$update();
                     wizard.$hideAll();
                     wizard.currentStep--;
                     if (wizard.currentStep >= 0) {
+                        wizard.content[wizard.currentStep].$populateModel($scope.model);
                         wizard.steps[wizard.currentStep].$show();
                         wizard.content[wizard.currentStep].$show();
                     } else {
@@ -116,16 +121,21 @@ angular.module('angularjs-wizard.directives')
                     }
                 };
 
+                wizard.$update = function(model){
+                    angular.extend($scope.model, model);
+                };
+
                 wizard.$init = function() {
                     wizard.currentStep = 0;
                     wizard.$hideAll();
+                    wizard.content[wizard.currentStep].$populateModel($scope.model);
                     wizard.steps[wizard.currentStep].$show();
                     wizard.content[wizard.currentStep].$show();
                 };
             }
         };
     })
-    .directive('wizardSteps', function () {
+    .directive('otWizardSteps', function () {
         return {
             restrict: 'E',
             template: '<div class="wizard-steps clearfix show" ng-transclude></div>',
@@ -133,14 +143,14 @@ angular.module('angularjs-wizard.directives')
             replace: true
         };
     })
-    .directive('wizardStep', function () {
+    .directive('otWizardStep', function () {
         return {
             restrict: 'E',
             template: '<div class="{{stepClass}}" >' +
-                '<div class="donut"><span class="{{iconClass}}"><span ng-hide="stepDisplayed">{{stepNumber}}</span></span></div>' +
-                '<span class="txt" ng-transclude></span>' +
-                '</div>',
-            require: ['^formWizard', 'wizardStep'],
+            '<div class="donut"><span class="{{iconClass}}"><span ng-hide="stepDisplayed">{{stepNumber}}</span></span></div>' +
+            '<span class="txt" ng-transclude></span>' +
+            '</div>',
+            require: ['^otFormWizard', 'otWizardStep'],
             transclude: true,
             replace: true,
             scope: {
@@ -173,25 +183,37 @@ angular.module('angularjs-wizard.directives')
                     $scope.stepClass = 'wstep';
                     if($scope.stepWasDisplayed){
                         $scope.stepDisplayed = true;
-                        $scope.stepClass = 'wstep done';
-                        $scope.iconClass = 'icon16 iconic-icon-checkmark';
+                        var valid = true;
+                        angular.forEach($scope.formWizardCtrl.content, function(item){
+                            if(item && item.$name === $scope.stepNumber){
+                                valid = item.$valid();
+                            }
+                        });
+                        if(valid){
+                            $scope.stepClass = 'wstep done';
+                            $scope.iconClass = 'icon16 iconic-icon-checkmark';
+                        } else{
+                            $scope.stepClass = 'wstep invalid';
+                            $scope.iconClass = 'icon16 iconic-icon-denied';
+                        }
                     }
                 };
             }
         };
     })
-    .directive('wizardStepContent', function () {
+    .directive('otWizardStepContent', function () {
         return {
             restrict: 'E',
             template: '<div class="step ui-formwizard-content" id="uiform{{stepNumber}}" ng-show="visible" >' +
-                '<div ng-form name="uiform{{stepNumber}}" ng-transclude></div>' +
-                '</div>',
-            require: ['^formWizard', 'wizardStepContent'],
+            '<div ng-form name="uiform{{stepNumber}}"><div ng-transclude></div></div>' +
+            '</div>',
+            require: ['^otFormWizard', 'otWizardStepContent'],
             transclude: true,
             scope: {
                 stepNumber: '@'
             },
             link: function ($scope, $elem, $attr, $ctrl) {
+                $scope.wizardModel = {};
                 $scope.formWizardCtrl = $ctrl[0];
                 $scope.stepCtrl = $ctrl[1];
                 $scope.stepCtrl.$name = $scope.stepNumber;
@@ -215,9 +237,24 @@ angular.module('angularjs-wizard.directives')
                 };
 
                 step.$valid = function() {
-                    return $scope['uiform{{stepNumber}}'].$valid;
+                    return $scope['uiform' + $scope.stepNumber].$valid;
                 };
 
+                step.$update = function(){
+                    var formName = 'uiform' + $scope.stepNumber;
+                    var form = $scope[formName];
+                    var data = {};
+                    angular.forEach(form, function (value, key) {
+                        if (value && value.hasOwnProperty('$modelValue'))
+                            data[key] = value.$modelValue;
+                    });
+                    $scope.formWizardCtrl.$update(data);
+                };
+
+                step.$populateModel = function(model){
+                    $scope.wizardModel = model;
+                    $scope.$$childHead.wizardModel = $scope.wizardModel;
+                };
             }
         };
     });

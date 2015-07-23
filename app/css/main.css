@@ -198,7 +198,8 @@ h4 .badge {float: right; margin-right: 40px;}
 	}
 	.wizard-steps .wstep.current {color: #737373;}
 	.wizard-steps .wstep.done {color: #72b110;}
-	.wizard-steps .wstep .donut { 
+    .wizard-steps .wstep.invalid {color: red;}
+	.wizard-steps .wstep .donut {
 		margin-top: 10px;
 	    border: 2px solid #c9c9c9;
 	    border-radius: 20px;
@@ -242,7 +243,7 @@ h4 .badge {float: right; margin-right: 40px;}
 	border-bottom: none;
 	float: left;
 	margin-left: 0;
-	margin-bottom: 0;	
+	margin-bottom: 0;
 }
 .wizard-vertical .ui-formwizard-content {
 	width: auto !important;
